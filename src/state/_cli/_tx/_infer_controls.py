@@ -74,7 +74,7 @@ def run_tx_infer_controls(args: argparse.Namespace):
     if args.checkpoint:
         ckpt_path = args.checkpoint
     else:
-        ckpt_path = os.path.join(args.model_dir, "checkpoints", "final.ckpt")
+        ckpt_path = os.path.join(args.model_dir, "final_from_preprint.ckpt")
     
     print(f"Loading model from {ckpt_path}")
     model = StateTransitionPerturbationModel.load_from_checkpoint(ckpt_path)

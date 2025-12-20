@@ -88,7 +88,8 @@ def run_tx_infer_controls(args: argparse.Namespace):
     if args.target_pert not in pert_onehot_map:
         raise ValueError(f"Perturbation '{args.target_pert}' not in model vocabulary. Available: {list(pert_onehot_map.keys())[:10]}...")
     
-    pert_vec = pert_onehot_map[args.target_pert].float()
+    pert_vec = pert_onehot_map[args.target_pert].float().to(device)
+    print(f"Loaded perturbation vector for '{args.target_pert}': shape={pert_vec.shape}, norm={torch.norm(pert_vec).item():.4f}")
     
     # Load data
     print(f"Loading control cells from {args.adata}")
@@ -116,7 +117,7 @@ def run_tx_infer_controls(args: argparse.Namespace):
             
             # Each cell uses its OWN expression
             ctrl_emb = torch.tensor(X_in[start:end], dtype=torch.float32, device=device)
-            pert_emb = pert_vec.unsqueeze(0).repeat(batch_size, 1).to(device)
+            pert_emb = pert_vec.unsqueeze(0).repeat(batch_size, 1)
             
             batch = {
                 "ctrl_cell_emb": ctrl_emb,

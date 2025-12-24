@@ -12,6 +12,7 @@ from ._cli import (
     run_emb_preprocess,
     run_emb_eval,
     run_tx_infer,
+    run_tx_infer_controls,
     run_tx_predict,
     run_tx_preprocess_infer,
     run_tx_preprocess_train,
@@ -124,12 +125,16 @@ def main():
                 case "infer":
                     # Run inference using argparse, similar to predict
                     run_tx_infer(args)
+                case "infer_controls":
+                    # Run control cell inference using argparse
+                    run_tx_infer_controls(args)
                 case "preprocess_train":
                     # Run preprocessing using argparse
                     run_tx_preprocess_train(args.adata, args.output, args.num_hvgs)
                 case "preprocess_infer":
                     # Run inference preprocessing using argparse
-                    run_tx_preprocess_infer(args.adata, args.output, args.control_condition, args.pert_col, args.seed)
+                    embed_key = getattr(args, 'embed_key', None)
+                    run_tx_preprocess_infer(args.adata, args.output, args.control_condition, args.pert_col, args.seed, embed_key)
 
 
 if __name__ == "__main__":
